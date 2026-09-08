@@ -221,7 +221,6 @@ class SmolVLA(SnapFlowPolicyMixin, ExportablePolicyMixin, Policy):
                 add_image_special_tokens=add_image_special_tokens,
                 attention_mode=attention_mode,
                 prefix_length=prefix_length,
-                pad_language_to=pad_language_to,
                 num_expert_layers=num_expert_layers,
                 num_vlm_layers=num_vlm_layers,
                 self_attn_every_n_layers=self_attn_every_n_layers,
@@ -342,7 +341,7 @@ class SmolVLA(SnapFlowPolicyMixin, ExportablePolicyMixin, Policy):
                     logger.warning(msg)
 
             # Apply dtype/precision
-            self.model._model.to_bfloat16_for_selected_params(self.config.dtype)
+            self.model._model.to_bfloat16_for_selected_params(self.config.dtype)  # noqa: SLF001
 
             # Apply requires_grad
             self.model._model.set_requires_grad()  # noqa: SLF001
