@@ -16,6 +16,7 @@ class ResourceType(StrEnum):
     REMOTE_SERVER = "Remote server"
     JOB = "JOB"
     JOB_FILE = "JOB_FILE"
+    PLUGIN = "Plugin"
 
 
 class BaseException(Exception):
@@ -690,4 +691,36 @@ class TrainerProtocolVersionMismatchError(BaseException):
             ),
             error_code="trainer_protocol_mismatch",
             http_status=http.HTTPStatus.CONFLICT,
+        )
+
+
+class SshFeatureDisabledError(BaseException):
+    """Raised when the SSH remote-trainer feature is off, or fails closed on network exposure.
+
+    Carries the evaluated reason (if any) rather than any server/alias detail,
+    since this error can reach an unauthenticated caller.
+    """
+
+    def __init__(self, reason: str | None = None) -> None:
+        detail = f": {reason}" if reason else ""
+        super().__init__(
+            message=f"The SSH remote-trainer feature is not available{detail}.",
+            error_code="ssh_feature_unavailable",
+            http_status=http.HTTPStatus.SERVICE_UNAVAILABLE,
+        )
+
+
+class PluginOperationError(BaseException):
+    """Raised when installing or uninstalling a robot plugin fails.
+
+    The failure originates in the ``uv pip`` subprocess (e.g. an unresolvable
+    install spec or an unavailable index), i.e. an upstream/environment error
+    rather than a bad client request, so it maps to 502.
+    """
+
+    def __init__(self, message: str) -> None:
+        super().__init__(
+            message=message,
+            error_code="plugin_operation_failed",
+            http_status=http.HTTPStatus.BAD_GATEWAY,
         )
