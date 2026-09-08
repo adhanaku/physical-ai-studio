@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, cast, Literal
 
 import torch
 from huggingface_hub import hf_hub_download
@@ -886,7 +886,7 @@ class SmolVLA(SnapFlowPolicyMixin, ExportablePolicyMixin, Policy):
         )
         extra_args["openvino"] = OpenVINOExportParameters(
             outputs=output_names,
-            compress_to_fp16=True,
+            compress_to_fp16=False,
             export_tokenizer=True,
             exporter_kwargs={},
             preprocessors_specs=[
