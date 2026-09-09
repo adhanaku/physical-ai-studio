@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, cast, Literal
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 import torch
 from huggingface_hub import hf_hub_download

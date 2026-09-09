@@ -11,7 +11,7 @@ from __future__ import annotations
 import copy
 import logging
 import math
-from typing import TYPE_CHECKING, Any, cast, Literal
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 import torch
 import torch.nn.functional as F  # noqa: N812
@@ -53,6 +53,7 @@ def _lazy_import_transformers() -> tuple:
 
 logger = logging.getLogger(__name__)
 
+
 def _resolve_precision_dtype(precision: Literal["bfloat16", "float32"]) -> torch.dtype:
     if precision == "bfloat16":
         return torch.bfloat16
@@ -61,7 +62,6 @@ def _resolve_precision_dtype(precision: Literal["bfloat16", "float32"]) -> torch
 
     msg = f"Invalid precision: {precision}"
     raise ValueError(msg)
-
 
 
 class SmolVLAModel(Model):
